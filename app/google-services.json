@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "510055972705",
+    "firebase_url": "https://police-49a2b.firebaseio.com",
+    "project_id": "police-49a2b",
+    "storage_bucket": "police-49a2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510055972705:android:79ecee4a224989ab",
+        "android_client_info": {
+          "package_name": "com.centinela"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBod1K5Bt6VlyYEDK2qtcWLf6IrA0duyF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510055972705-ru1v0imjcovh5cpuruo4tbmfo7dr6s40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
