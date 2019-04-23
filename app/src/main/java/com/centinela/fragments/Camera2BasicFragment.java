@@ -44,6 +44,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.centinela.MainActivity;
@@ -121,7 +122,7 @@ public class Camera2BasicFragment extends Fragment
     /**
      * Max preview height that is guaranteed by Camera2 API
      */
-    private static final int MAX_PREVIEW_HEIGHT = 1080;
+    private static final int MAX_PREVIEW_HEIGHT = 1500;
 
     /**
      * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
@@ -440,7 +441,7 @@ public class Camera2BasicFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
         view.findViewById(R.id.send_alert).setOnClickListener(this);
-
+        view.findViewById(R.id.add_comment).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
@@ -918,6 +919,27 @@ public class Camera2BasicFragment extends Fragment
                 }
                 break;
             }
+            case R.id.add_comment:
+                final EditText txtUrl = new EditText(getContext());
+
+
+                txtUrl.setHint("Descripción");
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Descripción del caso.")
+                        .setView(txtUrl)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String url = txtUrl.getText().toString();
+
+                            }
+                        })
+                        .setNegativeButton("Cerrar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        })
+                        .show();
+                break;
             default:break;
         }
     }

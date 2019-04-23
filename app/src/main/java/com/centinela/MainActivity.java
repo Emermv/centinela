@@ -1,6 +1,7 @@
 package com.centinela;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,15 +24,23 @@ import com.centinela.fragments.Home;
 import com.centinela.fragments.Report;
 import com.centinela.fragments.Settings;
 import com.centinela.fragments.Trackme;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.generic.RoundingParams;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Home.OnFragmentInteractionListener, Report.OnFragmentInteractionListener,
         Trackme.OnFragmentInteractionListener,Settings.OnFragmentInteractionListener {
-      ImageView avatar;
+      SimpleDraweeView avatar;
     TextView user_name,user_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager=getSupportFragmentManager();
 
            fragmentManager.beginTransaction().replace(R.id.scope, Camera2BasicFragment.newInstance(null)).commit();
+
         View header = navigationView.getHeaderView(0);
         avatar=header.findViewById(R.id.user_avatar);
         user_name=header.findViewById(R.id.user_name);
@@ -114,9 +124,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             fragmentManager.beginTransaction().replace(R.id.scope,new Settings()).commit();
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            Intent intentInvite = new Intent(Intent.ACTION_SEND);
+            intentInvite.setType("text/plain");
+            String body = "Utilza centinela para reportar crímenes en tiempo real! XD https://advisorsystem.net/centinela.apk ";
+            String subject = "Utilza centinela para reportar crímenes en tiempo real! XD";
+            intentInvite.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intentInvite.putExtra(Intent.EXTRA_TEXT, body);
+            startActivity(Intent.createChooser(intentInvite, "Compartir utilizando"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,11 +148,23 @@ public class MainActivity extends AppCompatActivity
                 getSharedPreferences("settings", Context.MODE_MULTI_PROCESS);
 
          if(prefs!=null){
+             Uri uri = Uri.parse(prefs.getString( "avatar" ,""));
+             int overlayColor = getResources().getColor(R.color.colorPrimaryDark);
+             RoundingParams roundingParams = RoundingParams.fromCornersRadius(7f);
+             roundingParams.setRoundAsCircle( true );
+             avatar.setHierarchy(new GenericDraweeHierarchyBuilder(getResources())
+                     .setRoundingParams(roundingParams)
+                     .build());
+             ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                     .setResizeOptions(new ResizeOptions(50, 50))
+                     .build();
+             avatar.setController(
+                     Fresco.newDraweeControllerBuilder()
+                             .setOldController(avatar.getController())
+                             .setImageRequest(request)
+                             .build());
 
-           /*  Glide.with(this).load(Uri.parse(prefs.getString("avatar", "@mipmap/ic_launcher_round")))
-                     .apply(RequestOptions.circleCropTransform()).into(avatar);
-
-*/
+             //avatar.setImageURI(uri);
              user_name.setText(prefs.getString("name","Centinela"));
              user_user.setText(prefs.getString("user","android"));
          }else{

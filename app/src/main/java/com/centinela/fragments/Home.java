@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.centinela.MainActivity;
@@ -37,8 +38,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,7 +83,7 @@ public class Home extends Fragment implements OnMapReadyCallback ,GoogleApiClien
     // integer for permissions results request
     private static final int ALL_PERMISSIONS_RESULT = 1011;
     GoogleMap googleMap;
-
+  private TextView direction;
     public Home() {
         // Required empty public constructor
 
@@ -145,6 +153,7 @@ public class Home extends Fragment implements OnMapReadyCallback ,GoogleApiClien
         FloatingActionButton update_location=view.findViewById(R.id.update_location);
         update_location.setOnClickListener(this);
         addresService=new AddresService();
+        direction=view.findViewById( R.id.direction );
         return view;
     }
     private boolean checkPlayServices() {
@@ -250,7 +259,26 @@ public class Home extends Fragment implements OnMapReadyCallback ,GoogleApiClien
                 title("Ubicación actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-       // addresService.find(lat,lng,null);
+        addresService.get(lat,lng,new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                //Log.d("AMOR", "---------------- this is response : " + response);
+                try {
+                    JSONObject data = new JSONObject(response.toString());
+                   // Log.d("AMOR",data.getString( "country" ));
+                    direction.setText("Usted se encuentra en:\n"+ data.getString( "staddress" )+" "+data.getString( "city" ) +" -"+data.get( "country" ));
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                // Pull out the first event on the public timeline
+
+            }
+        });
 
     }
 

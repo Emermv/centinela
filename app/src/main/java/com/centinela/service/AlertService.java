@@ -51,6 +51,8 @@ public class AlertService {
         alert.setDevice_name(getDeviceName());
         alert.setDevice_version(Build.VERSION.CODENAME);
         alert.setUser_id(prefs.getString("user","0"));
+        alert.setUser_avatar( prefs.getString( "avatar","" ) );
+        alert.setUser_name( prefs.getString( "name","" ) );
         alert.setTitle(title);
         alert.setLat("3838833");
         alert.setLng("93873");
@@ -66,7 +68,7 @@ public class AlertService {
             Bitmap bitmap = BitmapFactory.decodeFile(evidence_list.get(i).getAbsolutePath());
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 30, stream);
             byte[] byteArray = stream.toByteArray();
             bitmap.recycle();
 
@@ -90,7 +92,7 @@ public class AlertService {
                         Uri downloadUri = task.getResult();
                         Evidences e=new Evidences();
                         e.setPath(downloadUri.toString());
-                        e.setTitle("imagen 1");
+                        e.setTitle("evidencia 1");
                         evidences1.add(e);
 
                        if(j==evidence_list.size()-1){
