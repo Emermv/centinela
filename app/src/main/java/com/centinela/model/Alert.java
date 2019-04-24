@@ -12,7 +12,35 @@ public class Alert {
                 creation_time,
                 description,
                user_id,title,id,direction,lat,lng,device_name,device_version,user_name,user_avatar;
+public int evidences_size;
 
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
+    }
+
+    public boolean show;
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public boolean state;
+
+    public int getEvidences_size() {
+        return evidences_size;
+    }
+
+    public void setEvidences_size(int evidences_size) {
+        this.evidences_size = evidences_size;
+    }
 
     public String getUser_avatar() {
         return user_avatar;

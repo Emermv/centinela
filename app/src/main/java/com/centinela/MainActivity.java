@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -131,6 +134,13 @@ public class MainActivity extends AppCompatActivity
             intentInvite.putExtra(Intent.EXTRA_SUBJECT, subject);
             intentInvite.putExtra(Intent.EXTRA_TEXT, body);
             startActivity(Intent.createChooser(intentInvite, "Compartir utilizando"));
+        }else if(id==R.id.nav_exit){
+            deleteSharedPreferences( "settings" );
+           /* SharedPreferences settings = getSharedPreferences("settings", Context.MODE_MULTI_PROCESS);
+            settings.edit().clear();*/
+            Intent intent=new Intent( this,LoginActivity.class );
+            startActivity( intent );
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

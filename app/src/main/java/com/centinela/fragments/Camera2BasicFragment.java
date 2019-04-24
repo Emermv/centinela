@@ -229,6 +229,7 @@ public class Camera2BasicFragment extends Fragment
      * This is the output file for our picture.
      */
     private File mFile;
+    private String alert_description;
 
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
@@ -913,7 +914,7 @@ public class Camera2BasicFragment extends Fragment
             case R.id.send_alert:{
                 final AlertService service=new AlertService();
                 try {
-                    service.save(evidences, getContext(),"primer título");
+                    service.save(evidences, getContext(),alert_description);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -930,7 +931,7 @@ public class Camera2BasicFragment extends Fragment
                         .setView(txtUrl)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String url = txtUrl.getText().toString();
+                                alert_description = txtUrl.getText().toString();
 
                             }
                         })

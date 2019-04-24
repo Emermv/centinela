@@ -54,6 +54,7 @@ public class AutoFitTextureView extends TextureView {
                 setMeasuredDimension(width, width * mRatioHeight / mRatioWidth);
             } else {
                 setMeasuredDimension(height * mRatioWidth / mRatioHeight, height);
+              //  setMeasuredDimension(height * mRatioWidth / mRatioHeight, 3000);
             }
         }
     }

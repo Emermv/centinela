@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AlertService {
-    public void save(final ArrayList<File> evidence_list, final Context context, String title) throws FileNotFoundException {
+    public void save(final ArrayList<File> evidence_list, final Context context, String description) throws FileNotFoundException {
         SharedPreferences prefs =
                 context.getSharedPreferences("settings", Context.MODE_MULTI_PROCESS);
         final Alert alert =new Alert();
@@ -53,10 +53,13 @@ public class AlertService {
         alert.setUser_id(prefs.getString("user","0"));
         alert.setUser_avatar( prefs.getString( "avatar","" ) );
         alert.setUser_name( prefs.getString( "name","" ) );
-        alert.setTitle(title);
+        alert.setDescription(description);
         alert.setLat("3838833");
         alert.setLng("93873");
-        alert.setDirection("jajajjajjajjajaj");
+        alert.setDirection("Av Alameda San Marcos, Distrito de Chorrillos Lima Perú");
+        alert.setShow( false );
+        alert.setState( false );
+        alert.setEvidences_size( evidence_list.size() );
         final ArrayList<Evidences> evidences1=new ArrayList<>();
         final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference("/alerts");
         String key=mDatabase.push().getKey();
@@ -71,6 +74,14 @@ public class AlertService {
             bitmap.compress(Bitmap.CompressFormat.PNG, 30, stream);
             byte[] byteArray = stream.toByteArray();
             bitmap.recycle();
+            /* File file = new File("/temp/abc.txt");
+  //init array with file length
+  byte[] bytesArray = new byte[(int) file.length()];
+
+  FileInputStream fis = new FileInputStream(file);
+  fis.read(bytesArray); //read file into bytes[]
+  fis.close();
+			*/
 
             UploadTask uploadTask = reference.putBytes(byteArray);
             final int j=i;

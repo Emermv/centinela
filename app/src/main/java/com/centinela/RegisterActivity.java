@@ -1,5 +1,6 @@
 package com.centinela;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -142,6 +143,8 @@ public class RegisterActivity extends AppCompatActivity {
                      password.requestFocus();
                      password.setError("Por favor ingrese  una contraseña");
                    }else{
+                       final ProgressDialog dialog = ProgressDialog.show(getApplicationContext(), "",
+                               "Registrando "+name.getText()+"... espere un momento", true);
                        final User user_val=new User();
                        user_val.setName(name.getText().toString()+" "+last_name.getText().toString());
                        user_val.setUser(user.getText().toString());
@@ -177,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                            @Override
                            public void onComplete(@NonNull Task<Uri> task) {
+                               dialog.dismiss();
                                if (task.isSuccessful()) {
                                    Uri downloadUri = task.getResult();
                                    user_val.setAvatar(downloadUri.toString());
